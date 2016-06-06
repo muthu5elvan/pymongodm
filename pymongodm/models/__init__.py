@@ -1,5 +1,5 @@
 import copy
-from pymongodm import Mongo
+from pymongodm import db
 from pymongodm.utils import ValidationError
 from logging import Logger
 from copy import deepcopy
@@ -45,12 +45,12 @@ class Query:
 
 
 class Base:
-    db = Mongo
 
     def __generate_map(self, *args, **kwargs):
         return generate_map(*args, **kwargs)
 
-    def __init__(self, data, auto_get):
+    def __init__(self, data, auto_get=False):
+        print("me llaman")
         plugins = [RequireValidation(), TypeValidation(),
                    FunctionValidation()]
 
@@ -118,14 +118,16 @@ class Base:
 
     def get_collection_name(self):
         if hasattr(self, "collection_name"):
-            return self.db.get_collection(self.collection_name)
-        return self.db.get_collection(self.__class__.__name__.lower() + "s")
+            return db.get_collection(self.collection_name)
+        return db.get_collection(self.__class__.__name__.lower() + "s")
 
     def __iter_plugins(self, type_query, fields):
         query = Query(type_query, self, fields=fields)
         errors = []
         for plugin in self.plugins:
             try:
+                if '_id' in query.fields:
+                    del query.fields['_id']
                 plugin.__getattribute__('pre_%s' % type_query)(query)
             except StopIteration:
                 pass
@@ -151,7 +153,7 @@ class Base:
 
     def create(self, fields):
         self.__iter_plugins("create", fields)
-        self.collection.mest_insert_one(fields)
+        self.collection.insert_one(fields)
         self.__dict__.update(fields)
 
     def get(self):
@@ -160,7 +162,7 @@ class Base:
                           {'_id': self._id})
 
     def remove(self):
-        self.collection.remove_one({'_id': self._idb})
+        self.collection.remove_one({'_id': self._id})
 
     def cache(self, attribute, query, *args, **kwargs):
         if attribute not in self.__dict__:

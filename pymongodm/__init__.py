@@ -2,10 +2,16 @@ import pymongo
 from pymongo.cursor import Cursor
 
 
-def connect(odm_database="test", *args, **kwargs):
+def connect(database, *args, **kwargs):
+    global db
     global Mongo
-    Mongo = pymongo.MongoClient(*args, **kwargs)[odm_database]
-    return Mongo
+    if isinstance(database, str):
+        db = pymongo.MongoClient(*args, **kwargs)[database]
+    else:
+        db = database
+    # compatibility
+    Mongo = db
+    return db
 
 
 def next_converted(self):
