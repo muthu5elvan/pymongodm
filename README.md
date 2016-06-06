@@ -5,10 +5,10 @@ pymongodm is a odm respecting pymongo functionality and adds functionality such 
 change your current orm by pymongodb.
 
 Before:
-[Imgur](http://i.imgur.com/8TTqJ9h.jpg)
+![Imgur](http://i.imgur.com/8TTqJ9h.jpg)
 
 After:
-[Imgur](http://i.imgur.com/NDna9Wp.jpg)
+![Imgur](http://i.imgur.com/NDna9Wp.jpg)
 
 https://pypi.python.org/pypi/pymongodm
 
