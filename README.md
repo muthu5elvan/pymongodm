@@ -87,6 +87,22 @@ result.remove()
 
  ```
  
+ 
+### Models options
+#### use other collection
+by default the name of the collection is the name of the class + s.
+It can be changed with the following argument:
+collection = "encoding_profiles"
+
+#### hidden arguments in returns
+exclude_view = ['name']
+
+#### schemes allow the following parameters:
+ - type
+ - required
+ - function
+
+
 ## Rewrite basic methods
  Only need declare identic name in your class
  
