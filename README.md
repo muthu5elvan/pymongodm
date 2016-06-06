@@ -1,7 +1,15 @@
 # pymongodm
 
  pymongodm is a odm respecting pymongo functionality and adds functionality such as model validation.
- 
+
+https://pypi.python.org/pypi/pymongodm
+
+## install
+```
+pip install pymongodm
+```
+
+
 ## connect db
  ```python
  import pymongodm
