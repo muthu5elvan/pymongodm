@@ -1,3 +1,6 @@
+# 0.0.4 (6-6-2016)
+- Update readme
+
 # 0.0.3 (6-6-2016)
 - Update readme
 - Fix minor bugs
