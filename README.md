@@ -65,6 +65,7 @@ print("id in db", result._id)
 
 a = User({'_id': result._id, 'name': result.name})
 b = User(result.getattrs())  # get attrs return only db attrs
+b = User(result.get_clean())  # not return except arguments (exclude_view )
 
 # convert result finds to model
 results = pymongodm.db.users.find().model(User)
