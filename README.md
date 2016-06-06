@@ -2,7 +2,7 @@
 
  pymongodm is a odm respecting pymongo functionality and adds functionality such as model validation.
  
- ## connect db
+## connect db
  ```python
  import pymongodm
  
@@ -20,7 +20,7 @@ or
  pymongodm.connect(db)
  ```
  
- ## use db
+## use db
  ```python
  import pymongodm
  
@@ -31,7 +31,7 @@ or
  print(pymongodm.db.nice_collection.find_one())
  ```
  
- ## use models!
+## use models!
  
  ```python
  import pymongodm
@@ -79,7 +79,7 @@ result.remove()
 
  ```
  
- ## Rewrite basic methods
+## Rewrite basic methods
  Only need declare identic name in your class
  
 ```python
