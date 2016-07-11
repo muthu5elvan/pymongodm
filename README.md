@@ -1,6 +1,17 @@
 # pymongodm
 
- pymongodm is a odm respecting pymongo functionality and adds functionality such as model validation.
+pymongodm is a odm respecting pymongo functionality and adds functionality such as model validation.
+
+change your current orm by pymongodb.
+
+Before:
+
+![Imgur](http://i.imgur.com/8TTqJ9h.jpg)
+
+
+After:
+
+![Imgur](http://i.imgur.com/NDna9Wp.jpg)
 
 https://pypi.python.org/pypi/pymongodm
 
@@ -65,6 +76,7 @@ print("id in db", result._id)
 
 a = User({'_id': result._id, 'name': result.name})
 b = User(result.getattrs())  # get attrs return only db attrs
+b = User(result.get_clean())  # not return except arguments (exclude_view )
 
 # convert result finds to model
 results = pymongodm.db.users.find().model(User)
@@ -87,6 +99,22 @@ result.remove()
 
  ```
  
+ 
+### Models options
+#### use other collection
+by default the name of the collection is the name of the class + s.
+It can be changed with the following argument:
+collection = "encoding_profiles"
+
+#### hidden arguments in returns
+exclude_view = ['name']
+
+#### schemes allow the following parameters:
+ - type
+ - required
+ - function
+
+
 ## Rewrite basic methods
  Only need declare identic name in your class
  
