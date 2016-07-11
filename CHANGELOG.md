@@ -1,3 +1,6 @@
+# 0.1.0 (11-7-2016)
+- Add collect property
+
 # 0.0.5 (11-7-2016)
 - fix require=False and value None
 

@@ -10,6 +10,11 @@ from pymongodm.models.plugins.validation import TypeValidation
 log = Logger(__name__)
 
 
+class ClassProperty(property):
+    def __get__(self, cls, owner):
+        return self.fget.__get__(None, owner)()
+
+
 def generate_map(value, last=True, path=None, result=None):
     if result is None:
         result = {}
@@ -65,8 +70,7 @@ class Base:
         if not hasattr(self, "exclude"):
             self.exclude = []
         self.exclude.extend(exclude)
-
-        self.collection = self.get_collection_name()
+        self.collection = self.collect
 
         if not hasattr(self, "validation_map"):
             # modify original class (not instance!)
@@ -116,10 +120,12 @@ class Base:
         else:
             self.getattrs(False)
 
-    def get_collection_name(self):
-        if hasattr(self, "collection_name"):
-            return db.get_collection(self.collection_name)
-        return db.get_collection(self.__class__.__name__.lower() + "s")
+    @ClassProperty
+    @classmethod
+    def collect(cls):
+        if hasattr(cls, "collection_name"):
+            return db.get_collection(cls.collection_name)
+        return db.get_collection(cls.__module__.split(".")[-1])
 
     def __iter_plugins(self, type_query, fields):
         query = Query(type_query, self, fields=fields)
