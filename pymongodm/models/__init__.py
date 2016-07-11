@@ -45,12 +45,10 @@ class Query:
 
 
 class Base:
-
     def __generate_map(self, *args, **kwargs):
         return generate_map(*args, **kwargs)
 
-    def __init__(self, data, auto_get=False):
-        print("me llaman")
+    def __init__(self, data=None, auto_get=False):
         plugins = [RequireValidation(), TypeValidation(),
                    FunctionValidation()]
 
@@ -88,6 +86,8 @@ class Base:
             self._id = data
             if auto_get:
                 self.get()
+        elif not data:
+            pass
         else:
             raise Exception("invalid format")
 

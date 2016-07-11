@@ -1,3 +1,6 @@
+# 0.0.5 (11-7-2016)
+- fix require=False and value None
+
 # 0.0.4 (6-6-2016)
 - Update readme
 

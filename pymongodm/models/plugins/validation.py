@@ -44,7 +44,13 @@ class TypeValidation(Plugin):
     def __check(self, query):
         for field, value in query.fields.items():
             validation = query.model.validation_map[field]
-            if not isinstance(value, validation['type']):
+
+            if not validation.get('require', False):
+                avoid_check = value is None
+            else:
+                avoid_check = False
+
+            if not avoid_check and not isinstance(value, validation['type']):
                 raise ValidationError("Type validation error")
 
     def pre_create(self, query):
