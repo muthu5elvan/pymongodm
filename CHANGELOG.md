@@ -1,3 +1,6 @@
+# 1.0.1 (12-7-2016)
+- remove prints
+
 # 1.0.0 (12-7-2016)
 - auto_get = True
 - disable automatic discover cache

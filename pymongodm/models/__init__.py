@@ -134,12 +134,10 @@ class Base:
             except Exception as ex:
                 errors.append([plugin, ex])
         if len(errors):
-            print("errors!", errors)
             raise ValidationError(errors)
 
     def update(self, fields=None):
         if not fields:
-            print(self.getattrs())
             fields = deepcopy(self.getattrs())
             del fields['_id']
         self.__iter_plugins("update", fields)
@@ -159,7 +157,6 @@ class Base:
 
     def get(self):
         if "_id" not in self.__dict__:
-            print("false")
             return False
         self.__data_loaded = True
         return self.cache(self.collection.find_one,
