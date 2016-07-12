@@ -53,7 +53,7 @@ class Base:
     def __generate_map(self, *args, **kwargs):
         return generate_map(*args, **kwargs)
 
-    def __init__(self, data=None, auto_get=False):
+    def __init__(self, data=None, auto_get=True):
         plugins = [RequireValidation(), TypeValidation(),
                    FunctionValidation()]
 
@@ -95,12 +95,6 @@ class Base:
         else:
             raise Exception("invalid format")
 
-    def __getattr__(self, attr):
-        if attr not in (dir(self)):
-            if not self.__data_loaded:
-                self.get()
-        return self.__getattribute__(attr)
-
     def getattrs(self, exclude_view=False):
         if exclude_view:
             excludes = self.exclude + self.exclude_view
@@ -115,10 +109,10 @@ class Base:
         return result
 
     def get_clean(self):
-        if "exclude_view" in self:
-            self.getattrs(True)
+        if "exclude_view" in self.__dict__:
+            return self.getattrs(True)
         else:
-            self.getattrs(False)
+            return self.getattrs(False)
 
     @ClassProperty
     @classmethod
@@ -145,6 +139,7 @@ class Base:
 
     def update(self, fields=None):
         if not fields:
+            print(self.getattrs())
             fields = deepcopy(self.getattrs())
             del fields['_id']
         self.__iter_plugins("update", fields)
@@ -163,17 +158,19 @@ class Base:
         self.__dict__.update(fields)
 
     def get(self):
+        if "_id" not in self.__dict__:
+            print("false")
+            return False
         self.__data_loaded = True
-        return self.cache('get', self.collection.find_one,
+        return self.cache(self.collection.find_one,
                           {'_id': self._id})
 
     def remove(self):
         self.collection.remove_one({'_id': self._id})
 
-    def cache(self, attribute, query, *args, **kwargs):
-        if attribute not in self.__dict__:
-            result = query(*args, **kwargs)
-            if not result:
-                raise ValidationError("return None")
-            self.__dict__.update(result)
-        return getattr(self, attribute)
+    def cache(self, query, *args, **kwargs):
+        result = query(*args, **kwargs)
+        if not result:
+            raise ValidationError("return None")
+        self.__dict__.update(result)
+        return result

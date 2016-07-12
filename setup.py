@@ -36,7 +36,7 @@ except:
 
 setup(
     name='pymongodm',
-    version='0.1.0',
+    version='1.0.0',
     description='pymongodm',
     long_description=readme + '\n\n' + changelog,
     author='GlobalStudio',
@@ -50,6 +50,7 @@ setup(
     keywords='globalstudio, odm, mongo, pymongo',
     classifiers=[
         'Development Status :: 4 - Beta',
+        'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 3',
     ],
 )
