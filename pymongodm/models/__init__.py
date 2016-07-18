@@ -145,6 +145,13 @@ class Base:
                                    {'$set': fields})
         self.get()
 
+    def insert(self, fields=None):
+        if not fields:
+            fields = deepcopy(self.getattrs())
+        self.__iter_plugins("create", fields)
+        self.collection.insert_one(fields)
+        self.get()
+
     def define(self, fields):
         self.__data_loaded = True
         self.__iter_plugins("create", fields)
