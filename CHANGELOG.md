@@ -1,3 +1,6 @@
+# 1.0.2 (18-7-2016)
+- add method insert()
+
 # 1.0.1 (12-7-2016)
 - remove prints
 
