@@ -82,6 +82,8 @@ b = User(result.get_clean())  # not return except arguments (exclude_view )
 results = pymongodm.db.users.find().model(User)
 # or
 results = User.collect.find().model(User)
+# or 
+result = User(id)
 
 for result in results:
     print(result._id)
