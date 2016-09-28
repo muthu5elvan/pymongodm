@@ -36,7 +36,7 @@ except:
 
 setup(
     name='pymongodm',
-    version='1.0.2',
+    version='1.0.3',
     description='pymongodm',
     long_description=readme + '\n\n' + changelog,
     author='GlobalStudio',

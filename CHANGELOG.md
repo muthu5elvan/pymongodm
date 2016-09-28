@@ -1,3 +1,6 @@
+- 1.0.3 (28-9-2016)
+- automatic creation
+
 # 1.0.2 (18-7-2016)
 - add method insert()
 

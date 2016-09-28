@@ -81,10 +81,7 @@ class Base:
         self.__data_loaded = False
 
         if isinstance(data, dict):
-            if "_id" in data:
-                self.define(data)
-            else:
-                self.create(data)
+            self.create(data)
 
         elif isinstance(data, str):
             self._id = data
