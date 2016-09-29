@@ -2,6 +2,9 @@ import pymongo
 from pymongo.cursor import Cursor
 
 
+custom_id = '_id'
+
+
 def connect(database, *args, **kwargs):
     global db
     global Mongo
@@ -15,14 +18,20 @@ def connect(database, *args, **kwargs):
 
 
 def next_converted(self):
+    def replace_id(result):
+        if '_id' in result:
+            result[custom_id] = result.pop('_id')
+        return result
+
     if hasattr(self, "model_type"):
-        return self.model_type(self.original_next())
-    return self.original_next()
+        return self.model_type(replace_id(self.original_next()))
+    return replace_id(self.original_next())
 
 
 def _set_model(self, model_type):
     self.model_type = model_type
     return self
+
 
 Cursor.model = _set_model
 Cursor.original_next = Cursor.next

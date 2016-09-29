@@ -1,5 +1,5 @@
 import copy
-from pymongodm import db
+from pymongodm import db, custom_id
 from pymongodm.utils import ValidationError
 from logging import Logger
 from copy import deepcopy
@@ -84,7 +84,7 @@ class Base:
             self.create(data)
 
         elif isinstance(data, str):
-            self._id = data
+            setattr(self, custom_id, data)
             if auto_get:
                 self.get()
         elif not data:
@@ -123,8 +123,8 @@ class Base:
         errors = []
         for plugin in self.plugins:
             try:
-                if '_id' in query.fields:
-                    del query.fields['_id']
+                if custom_id in query.fields:
+                    del query.fields[custom_id]
                 plugin.__getattribute__('pre_%s' % type_query)(query)
             except StopIteration:
                 pass
@@ -136,42 +136,35 @@ class Base:
     def update(self, fields=None):
         if not fields:
             fields = deepcopy(self.getattrs())
-            del fields['_id']
+            del fields[custom_id]
         self.__iter_plugins("update", fields)
-        self.collection.update_one({'_id': self._id},
+        self.collection.update_one({'_id': getattr(self, custom_id)},
                                    {'$set': fields})
         self.get()
 
-    def insert(self, fields=None):
-        if not fields:
-            fields = deepcopy(self.getattrs())
-        self.__iter_plugins("create", fields)
-        self.collection.insert_one(fields)
-        self.get()
-
-    def define(self, fields):
-        self.__data_loaded = True
-        self.__iter_plugins("create", fields)
-        self.__dict__.update(fields)
-
     def create(self, fields):
         self.__iter_plugins("create", fields)
-        self.collection.insert_one(fields)
-        self.__dict__.update(fields)
+        setattr(self, custom_id,
+                self.collection.insert_one(fields).inserted_id)
+        self.get()
 
     def get(self):
-        if "_id" not in self.__dict__:
+        if custom_id not in self.__dict__:
             return False
         self.__data_loaded = True
-        return self.cache(self.collection.find_one,
-                          {'_id': self._id})
+        self.cache(self.collection.find_one,
+                   {'_id': getattr(self, custom_id)})
 
     def remove(self):
-        self.collection.remove_one({'_id': self._id})
+        self.collection.remove_one({'_id': getattr(self, custom_id)})
 
     def cache(self, query, *args, **kwargs):
         result = query(*args, **kwargs)
         if not result:
             raise ValidationError("return None")
+
+        if "_id" in result:
+            result[custom_id] = result.pop('_id')
+
         self.__dict__.update(result)
         return result
