@@ -6,6 +6,8 @@ from copy import deepcopy
 from pymongodm.models.plugins.validation import RequireValidation
 from pymongodm.models.plugins.validation import FunctionValidation
 from pymongodm.models.plugins.validation import TypeValidation
+from bson import ObjectId
+
 
 log = Logger(__name__)
 
@@ -79,11 +81,16 @@ class Base:
 
         # default
         self.__data_loaded = False
-
         if isinstance(data, dict):
+            if '_id' in data:
+                data[custom_id] = data.pop('_id')
             self.create(data)
 
         elif isinstance(data, str):
+            setattr(self, custom_id, ObjectId(data))
+            if auto_get:
+                self.get()
+        elif isinstance(data, ObjectId):
             setattr(self, custom_id, data)
             if auto_get:
                 self.get()
@@ -162,9 +169,6 @@ class Base:
         result = query(*args, **kwargs)
         if not result:
             raise ValidationError("return None")
-
-        if "_id" in result:
-            result[custom_id] = result.pop('_id')
 
         self.__dict__.update(result)
         return result

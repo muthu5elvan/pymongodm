@@ -1,3 +1,6 @@
+- 1.0.4 (29-9-2016)
+- support custom_id
+
 - 1.0.3 (28-9-2016)
 - automatic creation
 

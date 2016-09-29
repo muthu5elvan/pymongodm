@@ -1,7 +1,7 @@
 import pymongo
 from pymongo.cursor import Cursor
 
-
+# in db not rename field
 custom_id = '_id'
 
 
