@@ -163,7 +163,7 @@ class Base:
                    {'_id': getattr(self, custom_id)})
 
     def remove(self):
-        self.collection.remove_one({'_id': getattr(self, custom_id)})
+        self.collection.remove({'_id': getattr(self, custom_id)})
 
     def cache(self, query, *args, **kwargs):
         result = query(*args, **kwargs)
