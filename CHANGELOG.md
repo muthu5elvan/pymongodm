@@ -1,3 +1,6 @@
+- 1.0.5 (05-10-2016)
+- Fix remove item
+
 - 1.0.4 (29-9-2016)
 - support custom_id
 
