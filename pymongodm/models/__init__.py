@@ -82,9 +82,11 @@ class Base:
         # default
         self.__data_loaded = False
         if isinstance(data, dict):
-            if '_id' in data:
-                data[custom_id] = data.pop('_id')
-            self.create(data)
+            if custom_id not in data:
+                self.create(data)
+            else:
+                self.__data_loaded = True
+                self.__dict__.update(data)
 
         elif isinstance(data, str):
             setattr(self, custom_id, ObjectId(data))

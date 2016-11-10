@@ -1,3 +1,6 @@
+- 1.0.6 (10-11-2016)
+- Fix .model in find method
+
 - 1.0.5 (05-10-2016)
 - Fix remove item
 
