@@ -1,3 +1,6 @@
+- 1.0.7 (03-12-2016)
+- Avoid recursive validation (inspect_recursive=False)
+
 - 1.0.6 (10-11-2016)
 - Fix .model in find method
 

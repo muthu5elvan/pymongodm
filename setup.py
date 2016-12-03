@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import os
@@ -36,7 +36,7 @@ except:
 
 setup(
     name='pymongodm',
-    version='1.0.6',
+    version='1.0.7',
     description='pymongodm',
     long_description=readme + '\n\n' + changelog,
     author='GlobalStudio',

@@ -35,7 +35,6 @@ def generate_map(value, last=True, path=None, result=None):
         else:
             copy_path.append(key)
             generate_map(val, last, copy_path, result)
-    # import ipdb; ipdb.set_trace()
     return result
 
 
@@ -49,6 +48,19 @@ class Query:
             self.conditions = generate_map(conditions)
         if fields:
             self.fields = generate_map(fields)
+
+        if not self.model:
+            return
+        # remove recursive methods
+        remove = []
+        for key in self.fields:
+            if key not in model.validation_map:
+                base_key = key.split('.')[0]
+                if base_key in model.validation_map and not model.validation_map[base_key].get('inspect_recursive', True):
+                    remove.append(key)
+        for key in remove:
+            del self.fields[key]
+#        import ipdb; ipdb.set_trace()
 
 
 class Base:
@@ -134,6 +146,7 @@ class Base:
             try:
                 if custom_id in query.fields:
                     del query.fields[custom_id]
+
                 plugin.__getattribute__('pre_%s' % type_query)(query)
             except StopIteration:
                 pass
