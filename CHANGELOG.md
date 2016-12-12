@@ -1,3 +1,6 @@
+- 1.0.8 (12-12-2016)
+- Support insert id by create method
+
 - 1.0.7 (03-12-2016)
 - Avoid recursive validation (inspect_recursive=False)
 

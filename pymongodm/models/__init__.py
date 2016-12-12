@@ -165,7 +165,15 @@ class Base:
         self.get()
 
     def create(self, fields):
+        _id = None
+        if custom_id in fields:
+            _id = fields.pop(custom_id)
+
         self.__iter_plugins("create", fields)
+
+        if _id:
+            fields['_id'] = _id
+
         setattr(self, custom_id,
                 self.collection.insert_one(fields).inserted_id)
         self.get()
