@@ -51,7 +51,9 @@ or
  ```
  
 ## use models!
- 
+
+# In version 2.0.0 change schema validator to cerberus (http://python-cerberus.org)
+
  ```python
  import pymongodm
 pymongodm.connect("gstudio")
@@ -60,8 +62,8 @@ from pymongodm.models import Base
 
 
 class User(Base):
-    schema = {"name": {'type': str},
-              "other": {'type': list, 'required': False}}
+    schema = {"name": {'type': 'string'},
+              "other": {'type': 'list', 'required': False}}
     # optional, default is class_name + s
     collection_name = "random_name"
 
@@ -113,20 +115,14 @@ collection = "encoding_profiles"
 #### hidden arguments in returns
 exclude_view = ['name']
 
-#### schemes allow the following parameters:
- - type
- - required
- - function
-
-
 ## Rewrite basic methods
  Only need declare identic name in your class
  
 ```python
  
 class User(Base):
-    schema = {"name": {'type': str},
-              "other": {'type': list, 'required': False}}
+    schema = {"name": {'type': 'string'},
+              "other": {'type': 'list', 'required': False}}
     # optional, default is class_name + s
     collection_name = "random_name"
 
@@ -134,5 +130,37 @@ class User(Base):
         print("uhm ...")
 ```
 
-## Plugins
-TODO ...
+# Plugins
+
+## create new Plugins
+
+```python
+from pymongodm.models.plugins import Plugin
+
+
+class new_schemaValidation(Plugin):
+    def __check(self, query):
+        print(query.fields)  # all values
+        return {'success': False,
+                'errors': {'example': 'yep'}}
+
+    def pre_create(self, query):
+        return self.__check(query)
+
+    def pre_update(self, query):
+        return self.__check(query)
+
+    def post_create(self, query):
+        pass
+
+    def post_update(self, query):
+        pass
+```
+
+## use new plugin
+
+class User(Base):
+    plugins = [new_schemaValidation]
+    schema = {"name": {'type': 'string'},
+              "other": {'type': 'list', 'required': False}}
+

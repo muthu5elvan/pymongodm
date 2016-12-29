@@ -1,3 +1,6 @@
+- 2.0.0 (29-12-2016)
+- (!!) Changed validation system to cerberus (http://python-cerberus.org) check README.md
+
 - 1.0.8 (12-12-2016)
 - Support insert id by create method
 
