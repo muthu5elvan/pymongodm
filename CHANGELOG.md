@@ -1,3 +1,7 @@
+- 2.0.1 (6-02-2017)
+- Hack support ObjectId
+- Fix minor bugs
+
 - 2.0.0 (29-12-2016)
 - (!!) Changed validation system to cerberus (http://python-cerberus.org) check README.md
 

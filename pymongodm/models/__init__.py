@@ -14,9 +14,14 @@ class ClassProperty(property):
         return self.fget.__get__(None, owner)()
 
 
+class MyValidator(Validator):
+    def _validate_type_objectid(*args, **kwargs):
+        return True
+
+
 class Query:
     def __init__(self, model, fields):
-        self.validator = Validator(model.schema)
+        self.validator = MyValidator(model.schema)
         self.fields = fields.copy()
 
         if custom_id in self.fields:
@@ -95,17 +100,22 @@ class Base:
         errors = []
         for plugin in self.plugins:
             r = plugin.__getattribute__('%s_%s' % (action, type_query))(query)
-            if not r['success']:
+            if r is not None and not r['success']:
                 errors.append(r['errors'])
 
         if len(errors):
             raise ValidationError(errors)
 
     def update(self, fields=None):
-        if not fields:
-            fields = deepcopy(self.getattrs())
-            del fields[custom_id]
-        self.__iter_plugins("pre", "update", fields)
+        origin_fields = deepcopy(self.getattrs())
+        del origin_fields[custom_id]
+
+        if fields:
+            origin_fields.update(fields)
+        else:
+            fields = origin_fields
+
+        self.__iter_plugins("pre", "update", origin_fields)
         self.collection.update_one({'_id': getattr(self, custom_id)},
                                    {'$set': fields})
         self.__iter_plugins("post", "update", self.get())

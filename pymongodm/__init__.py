@@ -7,9 +7,11 @@ custom_id = '_id'
 
 def connect(database, *args, **kwargs):
     global db
+    global conn
     global Mongo
     if isinstance(database, str):
-        db = pymongo.MongoClient(*args, **kwargs)[database]
+        conn = pymongo.MongoClient(*args, **kwargs)
+        db = conn[database]
     else:
         db = database
     # compatibility
