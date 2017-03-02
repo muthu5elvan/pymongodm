@@ -158,9 +158,9 @@ class new_schemaValidation(Plugin):
 ```
 
 ## use new plugin
-
+```python
 class User(Base):
     plugins = [new_schemaValidation]
     schema = {"name": {'type': 'string'},
               "other": {'type': 'list', 'required': False}}
-
+```
