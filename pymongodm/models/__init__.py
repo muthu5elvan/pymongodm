@@ -120,6 +120,22 @@ class Base:
                                    {'$set': fields})
         self.__iter_plugins("post", "update", self.get())
 
+    def unset(self, fields):
+        origin_fields = deepcopy(self.getattrs())
+        del origin_fields[custom_id]
+
+        if fields:
+            origin_fields.update(fields)
+        else:
+            fields = origin_fields
+        for field in fields:
+            del origin_fields[field]
+
+        self.__iter_plugins("pre", "update", origin_fields)
+        self.collection.update_one({'_id': getattr(self, custom_id)},
+                                   {'$unset': fields})
+        self.__iter_plugins("post", "update", self.get())
+
     def create(self, fields):
         _id = None
         if custom_id in fields:

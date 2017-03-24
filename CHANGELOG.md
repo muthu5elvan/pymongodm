@@ -1,3 +1,6 @@
+- 2.0.2 (24-03-2017)
+- support unset
+
 - 2.0.1 (6-02-2017)
 - Hack support ObjectId
 - Fix minor bugs
