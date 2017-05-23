@@ -55,7 +55,7 @@ or
 # In version 2.0.0 change schema validator to cerberus (http://python-cerberus.org)
 
  ```python
- import pymongodm
+import pymongodm
 pymongodm.connect("gstudio")
 
 from pymongodm.models import Base
@@ -78,7 +78,8 @@ print("id in db", result._id)
 
 a = User({'_id': result._id, 'name': result.name})
 b = User(result.getattrs())  # get attrs return only db attrs
-b = User(result.get_clean())  # not return except arguments (exclude_view )
+c = User(result.get_clean())  # not return except arguments (exclude_view )
+d = User.find_one({'_id': result._id})  # normal query
 
 # convert result finds to model
 results = pymongodm.db.users.find().model(User)
@@ -86,6 +87,8 @@ results = pymongodm.db.users.find().model(User)
 results = User.collect.find().model(User)
 # or 
 result = User(id)
+# or
+result = User.find()
 
 for result in results:
     print(result._id)

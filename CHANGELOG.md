@@ -1,3 +1,6 @@
+- 2.0.3 (23-05-2017)
+- add find() and find_one()
+
 - 2.0.2 (24-03-2017)
 - support unset
 

@@ -95,6 +95,17 @@ class Base:
             return db.get_collection(cls.collection_name)
         return db.get_collection(cls.__module__.split(".")[-1])
 
+    @classmethod
+    def find_one(cls, *args, **kwargs):
+        r = cls.collect.find_one(*args, **kwargs)
+        if not r:
+            return None
+        return cls(r)
+
+    @classmethod
+    def find(cls, *args, **kwargs):
+        return cls.collect.find(*args, **kwargs).model(cls)
+
     def __iter_plugins(self, action, type_query, fields):
         query = Query(self, fields)
         errors = []
