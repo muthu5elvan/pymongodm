@@ -47,7 +47,7 @@ setup(
     url='https://github.com/GlobalStudioES/pymongodm',
     packages=find_packages(),
     include_package_data=True,
-    install_requires=[str(ir.req) for ir in install_reqs],
+    install_requires=[str(ir.requirement) for ir in install_reqs],
     license="GPL",
     zip_safe=False,
     keywords='globalstudio, odm, mongo, pymongo',
